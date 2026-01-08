@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
+    "chess.js": "^1.4.0",
     "cm-chessboard": "^8.11.4"
   }
 }
