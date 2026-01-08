@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+:root {
+	--dim-gray: #656565;
+	--gray-olive: #808782;
+	--celadon: #A6D3A0;
+	--tea-green: #D1FFD7;
+	--light-green: #B3FFB3;
+}
