@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Online Chess Queue</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+            rel="stylesheet"
+        />
+
+        <link rel="stylesheet" href="/src/style.css" />
+        <link rel="stylesheet" href="./assets/styles/cm-chessboard.css" />
+    </head>
+    <body class="bg-(--dim-gray)">
+        <h1 class="text-6xl font-bold text-center font-[Space_Grotesk] m-5 text-(--celadon)">
+            The Crowded Board
+        </h1>
+        <div
+            id="mainBoard"
+            style="width: 40%"
+            class="w-1/2 mx-auto mt-10 border-4 border-(--light-green)"
+        ></div>
+
+        <script type="module" src="/src/main.js"></script>
+    </body>
+</html>
