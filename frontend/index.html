@@ -2,7 +2,10 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+        />
         <title>Online Chess Queue</title>
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,19 +18,36 @@
         <link rel="stylesheet" href="/src/style.css" />
     </head>
     <body>
-        <div class="bg-linear-to-b from-(--dim-gray) to-(--tea-green) w-full min-h-screen p-4">
-            <h1
-            class="text-6xl font-bold font-[Space_Grotesk] border-2 border-gray-400 flex justify-center w-fit mx-auto text-(--celadon)"
+        <div class="mb-20">
+            <nav
+                class="navBar bg-(--dim-gray) p-4 border-b-2 border-(--dim-gray)"
             >
-                The Crowded Board
-            </h1>
+                <ul class="flex items-center justify-between px-4">
+                    <li>
+                        <p
+                            class="md:text-5xl text-base font-bold font-[Space_Grotesk] text-(--celadon) md:ml-32"
+                        >
+                            The Crowded Board
+                        </p>
+                    </li>
+
+                    <li
+                        class="flex gap-4 md:gap-10 md:text-2xl text-xs md:mr-20 text-(--celadon) font-bold"
+                    >
+                        <a>Play</a>
+                        <a>Learn</a>
+                        <a>Community</a>
+                        <a>Profile</a>
+                    </li>
+                </ul>
+            </nav>
+
             <div
                 id="mainBoard"
-                style="width: 40%"
-                class="w-1/2 mx-auto mt-10 border-4 border-(--light-green)"
+                class="w-full my-10 mx-auto max-w-100 sm:max-w-xl md:max-w-6xl border-4 border-(--light-green)"
             ></div>
 
             <script type="module" src="/src/main.js"></script>
-        <div>
+        </div>
     </body>
 </html>

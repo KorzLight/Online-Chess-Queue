@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/KorzLight/Online-Chess-Queue/issues"
   },
-  "homepage": "https://github.com/KorzLight/Online-Chess-Queue#readme"
+  "homepage": "https://github.com/KorzLight/Online-Chess-Queue#readme",
+  "dependencies": {
+    "stockfish": "^17.1.0"
+  }
 }

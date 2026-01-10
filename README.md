@@ -28,8 +28,8 @@ Create an online chess platform where a single player at a time plays against an
    * The AI plays against the current player.
    * Difficulty adjusts after each game:
 
-     * Player win → AI becomes weaker
-     * Player loss → AI becomes stronger
+     * Player win → AI becomes stronger
+     * Player loss → AI becomes weaker
    * Skill level stays within a reasonable range (e.g., 5–18).
 
 5. **Real-time updates**

@@ -5,19 +5,19 @@ import {
     COLOR,
     INPUT_EVENT_TYPE,
     PIECES_FILE_TYPE,
-} from 'cm-chessboard';
-import { Chess } from 'chess.js';
+} from 'cm-chessboard/src/Chessboard.js';
 
 // Extensions
 import {
     Markers,
     MARKER_TYPE,
 } from 'cm-chessboard/src/extensions/markers/Markers.js';
-import { RightClickAnnotator } from 'cm-chessboard/src/extensions/right-click-annotator/RightClickAnnotator.js';
 import {
     PromotionDialog,
     PROMOTION_DIALOG_RESULT_TYPE,
 } from 'cm-chessboard/src/extensions/promotion-dialog/PromotionDialog.js';
+import { Chess } from 'chess.js/dist/esm/chess.js';
+import { RightClickAnnotator } from 'cm-chessboard/src/extensions/right-click-annotator/RightClickAnnotator.js';
 
 // CSS (These will load as soon as this file is imported)
 import 'cm-chessboard/assets/chessboard.css';
@@ -26,6 +26,7 @@ import 'cm-chessboard/assets/extensions/arrows/arrows.css';
 import 'cm-chessboard/assets/extensions/promotion-dialog/promotion-dialog.css';
 
 const chess = new Chess();
+let lastActionTime = 0;
 
 const board = new Chessboard(document.getElementById('mainBoard'), {
     position: chess.fen(),
@@ -45,16 +46,46 @@ const board = new Chessboard(document.getElementById('mainBoard'), {
     ],
 });
 
-function inputHandler(event) {
-    console.log('inputHandler', event);
-    if (event.type === INPUT_EVENT_TYPE.movingOverSquare) {
-        return; // ignore this event
+let seed = 71;
+function random() {
+    const x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+function makeEngineMove(chessboard) {
+    const possibleMoves = chess.moves({ verbose: true });
+    if (possibleMoves.length > 0) {
+        const randomIndex = Math.floor(random() * possibleMoves.length);
+        const randomMove = possibleMoves[randomIndex];
+        setTimeout(() => {
+            // smoother with 500ms delay
+            chess.move({ from: randomMove.from, to: randomMove.to });
+            chessboard.setPosition(chess.fen(), true);
+            chessboard.enableMoveInput(inputHandler, COLOR.white);
+        }, 500);
     }
+}
+
+function inputHandler(event) {
+    // console.log('inputHandler', event);
+
+    if (event.type === INPUT_EVENT_TYPE.movingOverSquare) {
+        return;
+    }
+
     if (event.type !== INPUT_EVENT_TYPE.moveInputFinished) {
         event.chessboard.removeLegalMovesMarkers();
     }
+
     if (event.type === INPUT_EVENT_TYPE.moveInputStarted) {
-        // mark legal moves
+        // [SYNC] Update the timer so the global click listener knows we hit a piece!
+        lastActionTime = Date.now();
+
+        // [VISUALS] Clear old arrows/markers, but KEEP the piece highlight
+        // Note: We remove 'frame' (right clicks) but not 'square' (selection)
+        event.chessboard.removeArrows();
+        event.chessboard.removeMarkers(undefined, MARKER_TYPE.frame);
+
+        // Mark legal moves
         const moves = chess.moves({ square: event.squareFrom, verbose: true });
         event.chessboard.addLegalMovesMarkers(moves);
         return moves.length > 0;
@@ -64,54 +95,74 @@ function inputHandler(event) {
             to: event.squareTo,
             promotion: event.promotion,
         };
-        const result = chess.move(move);
+
+        let result = null;
+
+        // [CRASH FIX] Catch the error from chess.js
+        try {
+            result = chess.move(move);
+        } catch (e) {
+            result = null;
+        }
+
         if (result) {
+            // --- VALID MOVE ---
             event.chessboard.state.moveInputProcess.then(() => {
-                // wait for the move input process has finished
                 event.chessboard.setPosition(chess.fen(), true).then(() => {
-                    // update position, maybe castled and wait for animation has finished
                     makeEngineMove(event.chessboard);
                 });
             });
         } else {
-            // promotion?
-            let possibleMoves = chess.moves({
+            // --- INVALID MOVE / PROMOTION ---
+
+            // Check for promotion first
+            let isPromotion = false;
+            const possibleMoves = chess.moves({
                 square: event.squareFrom,
                 verbose: true,
             });
+
             for (const possibleMove of possibleMoves) {
                 if (
                     possibleMove.promotion &&
                     possibleMove.to === event.squareTo
                 ) {
+                    isPromotion = true;
                     event.chessboard.showPromotionDialog(
                         event.squareTo,
                         COLOR.white,
-                        (result) => {
-                            console.log('promotion result', result);
+                        (promoResult) => {
                             if (
-                                result.type ===
+                                promoResult.type ===
                                 PROMOTION_DIALOG_RESULT_TYPE.pieceSelected
                             ) {
+                                // Apply promotion
                                 chess.move({
                                     from: event.squareFrom,
                                     to: event.squareTo,
-                                    promotion: result.piece.charAt(1),
+                                    promotion: promoResult.piece.charAt(1),
                                 });
                                 event.chessboard.setPosition(chess.fen(), true);
                                 makeEngineMove(event.chessboard);
                             } else {
-                                // promotion canceled
+                                // Cancel promotion -> Reset board
+                                event.chessboard.setPosition(chess.fen(), true);
                                 event.chessboard.enableMoveInput(
                                     inputHandler,
                                     COLOR.white
                                 );
-                                event.chessboard.setPosition(chess.fen(), true);
                             }
                         }
                     );
                     return true;
                 }
+            }
+
+            // If it is NOT a promotion, it's just a bad move.
+            if (!isPromotion) {
+                // [CLEANUP] Dragged to invalid square? Clear everything.
+                event.chessboard.removeMarkers();
+                event.chessboard.removeArrows();
             }
         }
         return result;
@@ -125,56 +176,17 @@ function inputHandler(event) {
 board.enableMoveInput(inputHandler, COLOR.white);
 
 document.addEventListener('mousedown', (event) => {
+    // 1. Only care about Left Clicks
     if (event.button === 0) {
-        board.removeArrows();
-        //board.removeMarkers();
+        // 2. Check the time difference
+        const now = Date.now();
+        const timeSinceLastAction = now - lastActionTime;
+
+        // 3. If it has been more than 50ms since the chess library did something,
+        //    it means you clicked "Nothing" (empty square, background, opponent piece).
+        if (timeSinceLastAction > 50) {
+            board.removeArrows();
+            board.removeMarkers();
+        }
     }
 });
-
-// function inputHandler(event) {
-//     console.log(event);
-//     switch (event.type) {
-//         case INPUT_EVENT_TYPE.moveInputStarted:
-//             console.log(`moveInputStarted: ${event.squareFrom}`);
-//             return true; // false cancels move
-//         case INPUT_EVENT_TYPE.validateMoveInput:
-//             console.log(
-//                 `validateMoveInput: ${event.squareFrom}-${event.squareTo}`
-//             );
-//             return true; // false cancels move
-//         case INPUT_EVENT_TYPE.moveInputCanceled:
-//             console.log(`moveInputCanceled`);
-//             break;
-//         case INPUT_EVENT_TYPE.moveInputFinished:
-//             console.log(`moveInputFinished`);
-//             break;
-//         case INPUT_EVENT_TYPE.movingOverSquare:
-//             console.log(`movingOverSquare: ${event.squareTo}`);
-//             break;
-//     }
-// }
-
-// board.enableMoveInput((event) => {
-//     if (event.type === INPUT_EVENT_TYPE.validateMoveInput) {
-//         if (event.squareTo.charAt(1) === '8' && event.piece.charAt(1) === 'p') {
-//             board.showPromotionDialog(
-//                 event.squareTo,
-//                 COLOR.white,
-//                 (result) => {
-//                     console.log('Promotion result', result);
-//                     if (result && result.piece) {
-//                         board.setPiece(result.square, result.piece, true);
-//                     } else {
-//                         board.setPosition(position);
-//                     }
-//                 }
-//             );
-//         }
-//     }
-//     return true;
-// });
-
-// document.addEventListener('click', (event) => {
-//     board.removeArrows();
-//     board.removeMarkers();
-// });
