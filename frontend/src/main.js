@@ -1,21 +1,9 @@
 // @ts-nocheck
-import {
-    BORDER_TYPE,
-    Chessboard,
-    COLOR,
-    INPUT_EVENT_TYPE,
-    PIECES_FILE_TYPE,
-} from 'cm-chessboard/src/Chessboard.js';
+import { BORDER_TYPE, Chessboard, COLOR, INPUT_EVENT_TYPE, PIECES_FILE_TYPE } from 'cm-chessboard/src/Chessboard.js';
 
 // Extensions
-import {
-    Markers,
-    MARKER_TYPE,
-} from 'cm-chessboard/src/extensions/markers/Markers.js';
-import {
-    PromotionDialog,
-    PROMOTION_DIALOG_RESULT_TYPE,
-} from 'cm-chessboard/src/extensions/promotion-dialog/PromotionDialog.js';
+import { Markers, MARKER_TYPE } from 'cm-chessboard/src/extensions/markers/Markers.js';
+import { PromotionDialog, PROMOTION_DIALOG_RESULT_TYPE } from 'cm-chessboard/src/extensions/promotion-dialog/PromotionDialog.js';
 import { Chess } from 'chess.js/dist/esm/chess.js';
 import { RightClickAnnotator } from 'cm-chessboard/src/extensions/right-click-annotator/RightClickAnnotator.js';
 
@@ -39,11 +27,7 @@ const board = new Chessboard(document.getElementById('mainBoard'), {
             file: 'pieces/standard.svg',
         },
     },
-    extensions: [
-        { class: Markers, props: { autoMarkers: MARKER_TYPE.square } },
-        { class: RightClickAnnotator },
-        { class: PromotionDialog },
-    ],
+    extensions: [{ class: Markers, props: { autoMarkers: MARKER_TYPE.square } }, { class: RightClickAnnotator }, { class: PromotionDialog }],
 });
 
 let seed = 71;
@@ -123,37 +107,24 @@ function inputHandler(event) {
             });
 
             for (const possibleMove of possibleMoves) {
-                if (
-                    possibleMove.promotion &&
-                    possibleMove.to === event.squareTo
-                ) {
+                if (possibleMove.promotion && possibleMove.to === event.squareTo) {
                     isPromotion = true;
-                    event.chessboard.showPromotionDialog(
-                        event.squareTo,
-                        COLOR.white,
-                        (promoResult) => {
-                            if (
-                                promoResult.type ===
-                                PROMOTION_DIALOG_RESULT_TYPE.pieceSelected
-                            ) {
-                                // Apply promotion
-                                chess.move({
-                                    from: event.squareFrom,
-                                    to: event.squareTo,
-                                    promotion: promoResult.piece.charAt(1),
-                                });
-                                event.chessboard.setPosition(chess.fen(), true);
-                                makeEngineMove(event.chessboard);
-                            } else {
-                                // Cancel promotion -> Reset board
-                                event.chessboard.setPosition(chess.fen(), true);
-                                event.chessboard.enableMoveInput(
-                                    inputHandler,
-                                    COLOR.white
-                                );
-                            }
+                    event.chessboard.showPromotionDialog(event.squareTo, COLOR.white, (promoResult) => {
+                        if (promoResult.type === PROMOTION_DIALOG_RESULT_TYPE.pieceSelected) {
+                            // Apply promotion
+                            chess.move({
+                                from: event.squareFrom,
+                                to: event.squareTo,
+                                promotion: promoResult.piece.charAt(1),
+                            });
+                            event.chessboard.setPosition(chess.fen(), true);
+                            makeEngineMove(event.chessboard);
+                        } else {
+                            // Cancel promotion -> Reset board
+                            event.chessboard.setPosition(chess.fen(), true);
+                            event.chessboard.enableMoveInput(inputHandler, COLOR.white);
                         }
-                    );
+                    });
                     return true;
                 }
             }
