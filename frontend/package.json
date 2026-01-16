@@ -1,20 +1,20 @@
 {
-  "name": "frontend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "tailwindcss": "^4.1.18",
-    "vite": "^7.2.4"
-  },
-  "dependencies": {
-    "@tailwindcss/vite": "^4.1.18",
-    "chess.js": "^1.4.0",
-    "cm-chessboard": "^8.11.4"
-  }
+    "name": "frontend",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "tailwindcss": "^4.1.18",
+        "vite": "^7.2.4"
+    },
+    "dependencies": {
+        "@tailwindcss/vite": "^4.1.18",
+        "chess.js": "^1.4.0",
+        "cm-chessboard": "^8.11.4"
+    }
 }

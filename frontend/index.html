@@ -12,14 +12,12 @@
         <link rel="stylesheet" href="/src/style.css" />
     </head>
     <body>
-        <div class="pb-20">
-            <nav class="navBar bg-(--storm-dust) p-4 border-2 border-(--storm-dust)">
+        <div>
+            <nav class="navBar bg-(--storm-dust) p-4">
                 <ul class="flex items-center justify-between px-4">
-                    <li>
-                        <h1 class="md:text-5xl text-base font-bold font-[Space_Grotesk] text-(--celadon) md:ml-32">The Crowded Board</h1>
-                    </li>
+                    <h1 class="text-[clamp(1rem,2.5vw,2.5rem)] font-bold font-[Space_Grotesk] text-(--celadon) lg:ml-20">The Crowded Board</h1>
 
-                    <li class="flex gap-4 md:gap-10 md:text-2xl text-xs md:mr-20 text-(--celadon) font-bold">
+                    <li class="flex gap-4 md:gap-10 md:text-2xl text-s md:mr-20 text-(--celadon) font-bold">
                         <a>Play</a>
                         <a>Learn</a>
                         <a>Community</a>
@@ -27,20 +25,21 @@
                     </li>
                 </ul>
             </nav>
-            <div class="flex flex-col lg:flex-row p-8 gap-8">
-                <div id="mainBoard" class="flex-1 w-full mx-auto max-w-5xl border-4 border-(--light-green)"></div>
+            <div class="flex flex-wrap flex-col lg:flex-row p-8 gap-8 justify-center justify-items-center">
+                <div id="mainBoard" class="flex-1 w-full mx-auto max-w-7xl border-4 rounded border-(--light-green)"></div>
 
-                <div id="chat" class="flex flex-col border-4 border-(--light-green) bg-(--gray-olive)">
-                    <div class="bg-(--storm-dust)">
-                        <p class="text-2xl text-center text-(--celadon) font-extrabold p-2">LIVE COMMUNITY CHAT</p>
+                <div id="chat" class="flex flex-col w-full lg:w-1/5 border-4 rounded-2xl border-(--light-green) bg-(--gray-olive)">
+                    <div class="bg-(--storm-dust) rounded-t-2xl">
+                        <p class="text-[clamp(1rem,2.5vw,2rem)] text-center text-(--celadon) font-extrabold p-2">LIVE COMMUNITY CHAT</p>
                     </div>
 
                     <div id="messages" class="flex-1 p-4">
                         <p>Game started...</p>
                     </div>
 
-                    <div id="input" class="border-t">
-                        <input type="text" placeholder="Type a message..." class="w-full p-2" />
+                    <div id="input" class="flex my-2 mx-2 gap-2">
+                        <input type="text" placeholder="Type a message..." class="w-full p-2 border-2 rounded-4xl text-xl" />
+                        <button class="py-4 px-6 rounded-4xl bg-green-500 hover:bg-green-600 font-bold"><img class="w-6 h-6 scale-175" src="/send.svg" /></button>
                     </div>
                 </div>
             </div>

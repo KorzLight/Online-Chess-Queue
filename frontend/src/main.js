@@ -67,7 +67,7 @@ function inputHandler(event) {
         // [VISUALS] Clear old arrows/markers, but KEEP the piece highlight
         // Note: We remove 'frame' (right clicks) but not 'square' (selection)
         event.chessboard.removeArrows();
-        event.chessboard.removeMarkers(undefined, MARKER_TYPE.frame);
+        event.chessboard.removeMarkers(MARKER_TYPE.frame, undefined);
 
         // Mark legal moves
         const moves = chess.moves({ square: event.squareFrom, verbose: true });
@@ -132,7 +132,7 @@ function inputHandler(event) {
             // If it is NOT a promotion, it's just a bad move.
             if (!isPromotion) {
                 // [CLEANUP] Dragged to invalid square? Clear everything.
-                event.chessboard.removeMarkers();
+                event.chessboard.removeMarkers(undefined, undefined);
                 event.chessboard.removeArrows();
             }
         }
