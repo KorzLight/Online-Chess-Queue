@@ -4,7 +4,7 @@
     "description": "**Project Goal:**\r Create an online chess platform where a single player at a time plays against an AI (Stockfish), while other users watch in real-time. Each game affects the AI's difficulty dynamically.",
     "main": "index.js",
     "scripts": {
-        "server": "node server.js"
+        "start": "node server.js"
     },
     "repository": {
         "type": "git",

@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { BORDER_TYPE, Chessboard, COLOR, INPUT_EVENT_TYPE, PIECES_FILE_TYPE } from 'cm-chessboard/src/Chessboard.js';
+import { initChat } from './chat.js';
 
 // Extensions
 import { Markers, MARKER_TYPE } from 'cm-chessboard/src/extensions/markers/Markers.js';
@@ -8,11 +9,13 @@ import { Chess } from 'chess.js/dist/esm/chess.js';
 import { RightClickAnnotator } from 'cm-chessboard/src/extensions/right-click-annotator/RightClickAnnotator.js';
 
 // CSS (These will load as soon as this file is imported)
+import './style.css';
 import 'cm-chessboard/assets/chessboard.css';
 import 'cm-chessboard/assets/extensions/markers/markers.css';
 import 'cm-chessboard/assets/extensions/arrows/arrows.css';
 import 'cm-chessboard/assets/extensions/promotion-dialog/promotion-dialog.css';
 
+initChat();
 const chess = new Chess();
 let lastActionTime = 0;
 

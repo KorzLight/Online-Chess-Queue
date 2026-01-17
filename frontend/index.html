@@ -8,8 +8,6 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet" />
-
-        <link rel="stylesheet" href="/src/style.css" />
     </head>
     <body>
         <div>
@@ -37,10 +35,10 @@
                         <p>Game started...</p>
                     </div>
 
-                    <div id="input" class="flex my-2 mx-2 gap-2">
-                        <input type="text" placeholder="Type a message..." class="w-full p-2 border-2 rounded-4xl text-xl" />
-                        <button class="py-4 px-6 rounded-4xl bg-green-500 hover:bg-green-600 font-bold"><img class="w-6 h-6 scale-175" src="/send.svg" /></button>
-                    </div>
+                    <form id="input" class="flex my-2 mx-2 gap-2">
+                        <input id="inputBox" name="message" type="text" placeholder="Type a message..." autocomplete="off" required class="w-full p-2 border-2 rounded-4xl text-xl" />
+                        <button type="submit" class="py-4 px-6 rounded-4xl bg-green-500 hover:bg-green-600 font-bold"><img class="w-6 h-6 scale-175" src="/send.svg" /></button>
+                    </form>
                 </div>
             </div>
             <script type="module" src="/src/main.js"></script>
