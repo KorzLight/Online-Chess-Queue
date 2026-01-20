@@ -10,7 +10,7 @@ const io = new Server(server);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-app.use(express.static(join(__dirname, 'dist')));
+app.use(express.static(join(__dirname, '../dist')));
 
 io.on('connection', (socket) => {
     console.log('a user connected');
