@@ -13,7 +13,7 @@
         <div>
             <nav class="navBar bg-(--storm-dust) p-4">
                 <ul class="flex items-center justify-between px-4">
-                    <h1 class="text-[clamp(1rem,2.5vw,2.5rem)] font-bold font-[Space_Grotesk] text-(--celadon) lg:ml-20">The Crowded Board</h1>
+                    <h1 class="text-[clamp(1rem,2.5vw,2.5rem)] font-bold font-[Space_Grotesk] text-(--celadon) pr-6 text-center lg:ml-20">The Crowded Board</h1>
 
                     <li class="flex gap-4 md:gap-10 md:text-2xl text-s md:mr-20 text-(--celadon) font-bold">
                         <a>Play</a>
@@ -24,11 +24,28 @@
                 </ul>
             </nav>
             <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-8 p-8 max-w-7xl mx-auto lg:items-stretch">
-                <div id="mainBoard" class="w-full aspect-square border-4 rounded border-(--light-green)"></div>
+                <div class="flex flex-col gap-6 w-full">
+                    <div id="mainBoard" class="w-full aspect-square border-4 rounded border-(--light-green) shadow-2xl"></div>
 
-                <div id="chat" class="flex flex-col w-full h-150 lg:h-0 lg:min-h-full min-h-0 border-4 rounded-2xl border-(--light-green) bg-(--gray-olive)">
+                    <div id="engineBar" class="bg-(--gray-olive) p-4 rounded-2xl border-4 border-(--light-green) shadow-2xl">
+                        <div class="flex justify-between items-end text-(--celadon) font-extrabold mb-2 px-2 py-1 bg-(--storm-dust) rounded-2xl">
+                            <span class="text-sm tracking-widest uppercase">Engine Strength</span>
+                            <span class="text-sm">1800 ELO</span>
+                        </div>
+
+                        <div class="h-8 w-full bg-(--storm-dust) rounded-full border-2 border-(--light-green) p-1 overflow-hidden relative shadow-inner">
+                            <div id="difficultyFill" style="width: 5%" class="h-full bg-(--light-green) rounded-full shadow-[0_0_15px_rgba(var(--light-green),0.6)] relative transition-all duration-500 ease-out">
+                                <div class="absolute inset-0 bg-linear-to-b from-white/30 to-transparent rounded-full"></div>
+                            </div>
+
+                            <div class="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(45deg,#000_25%,transparent_25%,transparent_50%,#000_50%,#000_75%,transparent_75%,transparent)] bg-size-[10px_10px]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="chat" class="flex flex-col w-full h-150 lg:h-0 lg:min-h-full min-h-0 border-4 rounded-2xl border-(--light-green) bg-(--gray-olive) shadow-2xl">
                     <div class="bg-(--storm-dust) rounded-t-2xl shrink-0">
-                        <p class="text-[clamp(1rem,2.5vw,2rem)] text-center text-(--celadon) font-extrabold p-2">LIVE COMMUNITY CHAT</p>
+                        <p class="text-[clamp(1rem,2.5vw,2rem)] text-center text-(--celadon) font-extrabold p-2 uppercase">Live Community Chat</p>
                     </div>
 
                     <div id="messages" class="flex-1 p-4 overflow-y-auto min-h-0">
@@ -36,8 +53,8 @@
                     </div>
 
                     <form id="input" class="flex my-2 mx-2 gap-2 shrink-0">
-                        <input id="inputBox" name="message" type="text" placeholder="Type a message..." autocomplete="off" required class="w-full p-2 border-2 rounded-4xl text-xl" />
-                        <button type="submit" class="py-4 px-6 rounded-4xl bg-green-500 hover:bg-green-600 font-bold">
+                        <input id="inputBox" name="message" type="text" placeholder="Type a message..." autocomplete="off" required class="w-full p-2 border-2 rounded-full text-sm" />
+                        <button type="submit" class="py-2 px-3 rounded-full bg-green-500 hover:bg-green-600 font-bold">
                             <img class="w-6 h-6 scale-175" src="/send.svg" />
                         </button>
                     </form>
