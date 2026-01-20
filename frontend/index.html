@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -23,21 +23,18 @@
                     </li>
                 </ul>
             </nav>
-            <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-8 p-8 max-w-7xl mx-auto items-start">
-    
-                <div id="mainBoard" class="w-full aspect-square border-4 rounded border-(--light-green)">
-                    </div>
-            
+            <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-8 p-8 max-w-7xl mx-auto lg:items-stretch">
+                <div id="mainBoard" class="w-full aspect-square border-4 rounded border-(--light-green)"></div>
+
                 <div id="chat" class="flex flex-col w-full h-150 lg:h-full min-h-0 border-4 rounded-2xl border-(--light-green) bg-(--gray-olive)">
-                    
                     <div class="bg-(--storm-dust) rounded-t-2xl shrink-0">
                         <p class="text-[clamp(1rem,2.5vw,2rem)] text-center text-(--celadon) font-extrabold p-2">LIVE COMMUNITY CHAT</p>
                     </div>
-            
+
                     <div id="messages" class="flex-1 p-4 overflow-y-auto">
                         <p>Game started...</p>
                     </div>
-            
+
                     <form id="input" class="flex my-2 mx-2 gap-2 shrink-0">
                         <input id="inputBox" name="message" type="text" placeholder="Type a message..." autocomplete="off" required class="w-full p-2 border-2 rounded-4xl text-xl" />
                         <button type="submit" class="py-4 px-6 rounded-4xl bg-green-500 hover:bg-green-600 font-bold">
